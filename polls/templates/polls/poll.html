@@ -1,0 +1,25 @@
+{% extends "polls/base.html" %}
+
+{% block content %}
+    <h2>{{ poll.poll_name }}</h2>
+    <p>Published on: {{ poll.pub_date }}</p>
+    <form action="{% url 'save' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="poll_id" value="{{ poll.poll_id }}">
+        {% for question in question_list %}
+            <div class="mb-3">
+                <strong>{{ question.question_text }}</strong>
+                {% for choice in question.choice_set.all %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="{{ choice.id }}"
+                               name="{{ question.id }}" value="{{ choice.id }}">
+                        <label class="form-check-label" for="{{ choice.id }}">
+                            {{ choice.choice_text }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}

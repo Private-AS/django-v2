@@ -6,17 +6,15 @@ from django.db import models
 class Poll(models.Model):
     poll_id = models.AutoField(primary_key=True)
     poll_name = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
+    pub_date = models.DateTimeField('date published', auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_by')
-    is_submitted = models.BooleanField(default=False)
-    submitted_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='submitted_by', null=True, blank=True)
 
     def __str__(self):
         return self.poll_name
 
 class Question(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, default=1)
-    pub_date = models.DateTimeField('date published')
+    pub_date = models.DateTimeField('date published', auto_now_add=True)
     question_text = models.CharField(max_length=200)
 
     def __str__(self):
@@ -30,3 +28,11 @@ class Choice(models.Model):
     def __str__(self):
         return self.choice_text
 
+
+class PollSubmission(models.Model):
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    submitted_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('poll', 'user')  # Ensure a user can submit a poll only once

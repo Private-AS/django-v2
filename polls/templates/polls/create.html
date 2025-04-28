@@ -1,0 +1,23 @@
+{% extends "polls/base.html" %}
+
+{% block content %}
+<h2>Create a New Poll</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <h4>Poll Details</h4>
+        {{ poll_form.as_p }}
+    </div>
+    <div class="form-group">
+        <h4>Questions</h4>
+        {{ question_formset.management_form }}
+        {{ question_formset.as_p }}
+    </div>
+    <div class="form-group">
+        <h4>Choices</h4>
+        {{ choice_formset.management_form }}
+        {{ choice_formset.as_p }}
+    </div>
+    <button type="submit" class="btn btn-primary">Create Poll</button>
+</form>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "polls/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Create a new account</title>
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1>Create a new account</h1>
+    <form method="POST" class="form-grup">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Register</button>
+    </form>
+{% endblock %}
